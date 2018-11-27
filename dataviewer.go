@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -44,7 +43,7 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 }
 
 func (s *Server) deliver(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Welcome.\n")
+	s.render("templates/main.html", w)
 }
 
 func (s *Server) serveUp() {
