@@ -6,7 +6,8 @@ import (
 )
 
 func (s *Server) render(f string, w io.Writer) error {
-	templ, err := template.ParseFiles(f)
+	templ := template.New("main")
+	templ, err := templ.Parse(f)
 	if err != nil {
 		return err
 	}

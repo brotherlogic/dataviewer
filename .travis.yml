@@ -18,4 +18,4 @@ before_install:
 
 script:
 - fgt golint $(find . | grep .go$ | grep -v dataviewer.pb.go)
-- $HOME/gopath/bin/goveralls -service=travis-ci -ignore=dataviewer.go -package github.com/brotherlogic/dataviewer
+- $HOME/gopath/bin/goveralls -service=travis-ci -ignore=dataviewer.go,main.go -package github.com/brotherlogic/dataviewer

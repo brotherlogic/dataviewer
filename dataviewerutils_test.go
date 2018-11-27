@@ -13,7 +13,7 @@ func InitTestServer() *Server {
 func TestTemplateFailure(t *testing.T) {
 	s := InitTestServer()
 	var buf bytes.Buffer
-	err := s.render("madeup", &buf)
+	err := s.render("{{.broken", &buf)
 
 	if err == nil {
 		t.Errorf("No error in processing")
