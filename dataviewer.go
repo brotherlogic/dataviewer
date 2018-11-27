@@ -43,7 +43,12 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 }
 
 func (s *Server) deliver(w http.ResponseWriter, r *http.Request) {
-	err := s.render("templates/main.html", w)
+	data, err := Asset("templates/main.html")
+	if err != nil {
+		fmt.Fprintf(w, fmt.Sprintf("Error: %v", err))
+		return
+	}
+	err = s.render(string(data), w)
 	if err != nil {
 		fmt.Fprintf(w, fmt.Sprintf("Error: %v", err))
 	}
