@@ -81,6 +81,6 @@ func main() {
 	server.Register = server
 	server.RegisterServer("dataviewer", false)
 	go server.serveUp()
-	server.Log("Starting")
+	server.Log(fmt.Sprintf("Starting %v", server.GoServer.RunningFile))
 	fmt.Printf("%v", server.Serve())
 }
