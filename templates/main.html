@@ -1,3 +1,4 @@
+
 <head>
   <!-- Plotly.js -->
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -6,7 +7,13 @@
 <body>
   <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
-raw_data = [{"timestamp":1543533062,"value":-101731},{"timestamp":1543533364,"value":-101731},{"timestamp":1543533665,"value":-101731},{"timestamp":1543533966,"value":-101731},{"timestamp":1543534267,"value":-101731},{"timestamp":1543534568,"value":-101731},{"timestamp":1543534869,"value":-101731},{"timestamp":1543535170,"value":-101731},{"timestamp":1543535470,"value":-101731},{"timestamp":1543535771,"value":-101731},{"timestamp":1543536073,"value":-101731},{"timestamp":1543536374,"value":-101731}]
+
+var xmlhttp = new XMLHttpRequest();
+var url = "http://192.168.86.250:8085";
+
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var raw_data = JSON.parse(this.responseText);
 
 var trace = {
   x: [],
@@ -19,6 +26,8 @@ for (entry in raw_data) {
   trace.y.push(raw_data[entry].value);
 }
 
+console.log(trace)
+
 var data = [ trace ];
 
 var layout = {
@@ -26,5 +35,11 @@ var layout = {
 };
 
 Plotly.newPlot('myDiv', data, layout);
+
+    }
+};
+
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
   </script>
 </body><head>
