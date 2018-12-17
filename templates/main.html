@@ -6,8 +6,8 @@
 
 <body>
   <select>
-    {{range $key, $value := .Names}}
-    <option value="{{ $value }}">{{ $key }}</option>
+    {{range $value := .Names}}
+    <option value="{{ $value }}">{{ $value }}</option>
     {{end}}
   </select>
   
