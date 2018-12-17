@@ -42,13 +42,18 @@ func (s *Server) Mote(ctx context.Context, master bool) error {
 	return nil
 }
 
+type properties struct {
+	Names []string
+}
+
 func (s *Server) deliver(w http.ResponseWriter, r *http.Request) {
 	data, err := Asset("templates/main.html")
 	if err != nil {
 		fmt.Fprintf(w, fmt.Sprintf("Error: %v", err))
 		return
 	}
-	err = s.render(string(data), w)
+	props := properties{Names: []string{"test1", "test2"}}
+	err = s.render(string(data), props, w)
 	if err != nil {
 		fmt.Fprintf(w, fmt.Sprintf("Error: %v", err))
 	}
