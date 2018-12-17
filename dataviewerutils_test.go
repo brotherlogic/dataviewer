@@ -13,7 +13,7 @@ func InitTestServer() *Server {
 func TestTemplateFailure(t *testing.T) {
 	s := InitTestServer()
 	var buf bytes.Buffer
-	err := s.render("{{.broken", &buf)
+	err := s.render("{{.broken", properties{}, &buf)
 
 	if err == nil {
 		t.Errorf("No error in processing")
@@ -23,7 +23,7 @@ func TestTemplateFailure(t *testing.T) {
 func TestEasyTemplate(t *testing.T) {
 	s := InitTestServer()
 	var buf bytes.Buffer
-	err := s.render("templates/main.html", &buf)
+	err := s.render("templates/main.html", properties{}, &buf)
 
 	if err != nil {
 		t.Errorf("Rendering error: %v", err)
