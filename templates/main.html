@@ -1,21 +1,17 @@
-
+<html>
 <head>
   <!-- Plotly.js -->
    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
-<body>
-  <select>
-    {{range $value := .Names}}
-    <option value="{{ $value }}">{{ $value }}</option>
-    {{end}}
-  </select>
-  
-  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
   <script>
+function paint() {
+
+var e = document.getElementById("filter");
+var strUser = e.options[e.selectedIndex].value;
 
 var xmlhttp = new XMLHttpRequest();
-var url = "http://192.168.86.250:8085";
+var url = "http://192.168.86.28:8085/all/";
 
 xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -47,5 +43,17 @@ Plotly.newPlot('myDiv', data, layout);
 
 xmlhttp.open("GET", url, true);
 xmlhttp.send();
+}
   </script>
-</body><head>
+<body>
+<form>
+  <select id="filter" onchange="paint">>                                                                                                                                                {{range $value := .Names}}                                                                                                                                                         <option value="{{ $value }}">{{ $value }}</option>                                                                                                                                 {{end}}                                                                                                                                                                          </select>
+</form>
+
+  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+<script>
+paint()
+</script>
+</body>
+</html>
