@@ -116,7 +116,10 @@ func main() {
 	server := Init()
 	server.PrepServer()
 	server.Register = server
-	server.RegisterServer("dataviewer", false)
+	err := server.RegisterServer("dataviewer", false)
+	if err != nil {
+		log.Fatalf("Unable to register: %v", err)
+	}
 	go server.serveUp()
 	fmt.Printf("%v", server.Serve())
 }
