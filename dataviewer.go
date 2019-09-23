@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/brotherlogic/goserver"
 	"golang.org/x/net/context"
@@ -14,26 +13,22 @@ import (
 
 	pbdc "github.com/brotherlogic/datacollector/proto"
 	pbg "github.com/brotherlogic/goserver/proto"
-	"github.com/brotherlogic/goserver/utils"
 )
 
 type collector interface {
 	GetDataSets(ctx context.Context, req *pbdc.GetDataSetsRequest) (*pbdc.GetDataSetsResponse, error)
 }
 
-type prodCollector struct{}
+type prodCollector struct {
+	dial func(server string) (*grpc.ClientConn, error)
+}
 
 func (p *prodCollector) GetDataSets(ctx context.Context, req *pbdc.GetDataSetsRequest) (*pbdc.GetDataSetsResponse, error) {
-	ip, port, err := utils.Resolve("datacollector")
+	conn, err := p.dial("datacollector")
 	if err != nil {
 		return &pbdc.GetDataSetsResponse{}, err
 	}
-
-	conn, err := grpc.Dial(ip+":"+strconv.Itoa(int(port)), grpc.WithInsecure())
 	defer conn.Close()
-	if err != nil {
-		return &pbdc.GetDataSetsResponse{}, err
-	}
 
 	client := pbdc.NewDataCollectorServiceClient(conn)
 	return client.GetDataSets(ctx, req)
@@ -51,6 +46,7 @@ func Init() *Server {
 		&goserver.GoServer{},
 		&prodCollector{},
 	}
+	s.collector = &prodCollector{dial: s.DialMaster}
 	return s
 }
 
